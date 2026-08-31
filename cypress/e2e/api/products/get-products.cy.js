@@ -1,31 +1,6 @@
+import { validateContract } from '../../../support/products/validate-contract';
+
 describe('GET /products', () => {
-    const validateContract = (responseData, contract) => {
-        Object.entries(contract).forEach(([key, expectedType]) => {
-            const value = responseData[key];
-
-            if (typeof expectedType === 'string') {
-                expect(value, key).to.be.a(expectedType);
-                return;
-            }
-
-            if (Array.isArray(expectedType)) {
-                expect(value, key).to.be.an('array');
-                value.forEach((item) => {
-                    if (typeof expectedType[0] === 'string') {
-                        expect(item, key).to.be.a(expectedType[0]);
-                        return;
-                    }
-
-                    validateContract(item, expectedType[0]);
-                });
-                return;
-            }
-
-            expect(value, key).to.be.an('object');
-            validateContract(value, expectedType);
-        });
-    };
-
     context('Caminho feliz', () => {
         it('Deve retornar todos os produtos e validar o contrato de response', () => {
             cy.fixture('products-contract.json').then((productContract) => {
