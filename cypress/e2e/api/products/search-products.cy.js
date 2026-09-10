@@ -26,6 +26,7 @@ describe('GET /products/search', () => {
                 });
             });
         })
+
     })
     context('Limitador de resultados', () => {
         it('Deve retornar lista de produtos conforme tamanho do limitador de resultados', () => {
@@ -48,10 +49,20 @@ describe('GET /products/search', () => {
                 expect(response.body.products).to.be.an('array').and.length(30);
             });
         })
-
     })
 
-
+    context('Limitador de campos e skip de resultados', () => {
+        it('Deve retornar lista de produtos conforme lista de campos informada na busca', () => {
+            const campos = 'id,title,category,price';
+            const expectResponseKeys = campos.split(',');
+            JSON.stringify(expectResponseKeys);
+            cy.request('GET', `/products/search?select=${campos}`).then((response) => {
+                expect(response.status).to.eq(200);
+                expect(response.body.products).to.be.an('array');
+                expect(response.body.products[0]).to.have.all.keys(expectResponseKeys);
+            });
+        })
+    })
 
 
 

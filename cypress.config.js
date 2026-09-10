@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+const { allureCypress } = require("allure-cypress/reporter");
 
 module.exports = defineConfig({
   allowCypressEnv: false,
@@ -9,7 +10,8 @@ module.exports = defineConfig({
     supportFile: 'cypress/support/e2e.js',
     video: false,
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      allureCypress(on, config);
+      return config;
     },
   },
 });
